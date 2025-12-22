@@ -27,6 +27,9 @@ type `dt` to list the directory tree. Directory 0, the current directory, will b
 
 Now you can either navigate to a directory by its number ([`r NUM`](#rotate-to-a-directory)) or enter into a new directory. In the latter case you can either replace the current directory ( `cd new_directory` )  or save the current directory and push a new one to the directory stack and `cd` to it ( [`pu`](#push-in-a-new-directory) ).
 
+### Directory Variables
+For convenince of quick reference of directories registered in the directory stack, a set of 'environment' variables are created for each of the directories. They take the form of `$dir#` where `#` corresponds to the directory number of that directory. These variables are extremely useful. You can, for example, list the content of directory 3 by typing `ls $dir3`. You can also copy/move files between directories, for example `cp $dir4/*.txt .` or `cp $dir5/* $dir3/`.
+
 ### Rotate to a directory
 After you type `dt` and view the directory tree, find the corresponding directory number (`NUM`) for the directory you want to rotate to, then type `r NUM`. Say if we want to switch to directory `3`
 <br><img src="./doc/ds3.png" width="550"/>
@@ -52,3 +55,6 @@ Simply type `po` will remove the current directory (directory 0) or `po NUM` whi
 If you have saved the directory stack from `~/.dirstack/dirstack#` to a separate file, you can later reload it by typing `lstack <dirstack file>`
 
 
+## License
+
+[MIT licensed](https://github.com/dashagen/dirstack-plus/blob/master/LICENSE).
