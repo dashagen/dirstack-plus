@@ -82,9 +82,28 @@ function sd()
 # Re-engineered CD that will modify the dirstack each time
 function cd()
 {
-    builtin cd "$@"
-    dirs -v -l >| $DIRSFILE
-    xtitle
+    if [ "$1" ]; then
+        p_dir=`realpath $1`
+        dirlist=( `cat $DIRSFILE|cut -c5-` )
+
+        match_idx=-1
+        #check if dir already in the stack
+        for i in `seq 0 $((${#dirlist[@]}-1))`; do
+            chk_path=`realpath ${dirlist[$i]}`
+
+            if [ "$chk_path" = "$p_dir" ]; then
+                match_idx=$i
+            fi
+        done
+
+        if [ "$match_idx" = "-1" ]; then
+            builtin cd "$@"
+            dirs -v -l >| $DIRSFILE
+            xtitle
+        else
+            r $match_idx
+        fi
+    fi
 }
 
 
@@ -134,15 +153,17 @@ function g()
 function pu()
 {
     if [ "$1" ]; then
-        p_dir="${1/%\//}"
+        p_dir=`realpath $1`
 
         dirlist=( `cat $DIRSFILE|cut -c5-` )
 
         match_idx=-1
 
         #check if dir already in the stack
-        for i in `seq 0 $((${#dirlist[@]}-1))`;do
-            if [ "${dirlist[$i]}" = "$p_dir" ]; then
+        for i in `seq 0 $((${#dirlist[@]}-1))`; do
+            chk_path=`realpath ${dirlist[$i]}`
+
+            if [ "$chk_path" = "$p_dir" ]; then
                 match_idx=$i
             fi
         done
