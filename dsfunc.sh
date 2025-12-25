@@ -109,25 +109,18 @@ function cd()
 
 
 # Rotate the dirstack
-function r() 
-{ 
-    if [ $1 ]; then
-
-        if [ $1 -ne 0 ]; then
-
-            let "a = $1 -1"
-
-            if [ $a -gt 0 ]; then
-                for i in `seq 1 $a`;do
-                    pushd >/dev/null
-                    pushd +1 >/dev/null
-                done
-            fi
-
+function r()
+{
+    if [ -z "$1" ];then
+        pushd >/dev/null
+    else
+        if [[ "$1" -gt 0 ]]; then
+            for (( i=2;i<=$1;i++ ));do
+                pushd >/dev/null
+                pushd +1 >/dev/null
+            done
             pushd >/dev/null
         fi
-    else
-        pushd >/dev/null
     fi
 
     ls -G -ltr
